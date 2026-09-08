@@ -15,38 +15,12 @@ body {
   padding: 40px 20px;
 }
 .container { max-width: 1000px; margin: 0 auto; }
-h1 { 
-  text-align: center; 
-  font-size: 2.5rem; 
-  margin-bottom: 10px; 
-  color: #fbbf24;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
+h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; color: #fbbf24; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 .subtitle { text-align: center; color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
-.back-link { 
-  display: inline-flex; align-items: center; gap: 8px;
-  margin-bottom: 20px; 
-  color: #60a5fa; 
-  text-decoration: none; 
-  font-weight: 700;
-  font-size: 1.1rem;
-}
+.back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 1.1rem; }
 .back-link:hover { color: #93c5fd; }
-.table-container {
-  background: #1e293b;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  overflow: hidden;
-  border: 1px solid #334155;
-}
-iframe {
-  width: 100%;
-  height: 600px;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-}
+.table-container { background: #1e293b; border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid #334155; }
+iframe { width: 100%; height: 600px; border: none; border-radius: 8px; background: #fff; }
 </style>
 </head>
 <body>
@@ -56,9 +30,17 @@ iframe {
   <p class="subtitle">Результаты всех учеников обновляются в реальном времени</p>
   
   <div class="table-container">
-    <!-- ✅ ВАША ССЫЛКА НА ТАБЛИЦУ УЖЕ ВСТАВЛЕНА СЮДА -->
-    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSOC_dA-1dak7YF8z-uMLy8bt0GhPUHTZDhyysPf0Pv_AJUBI-l1ozoDkXkKlK4WgxK8awvsJQlV09p/pubhtml?widget=true&amp;headers=false"></iframe>
+    <!-- Скрипт ниже автоматически подставит ссылку с защитой от кэша -->
+    <iframe id="sheet-frame" src="" width="100%" height="600px" style="border: none; border-radius: 8px; background: #fff;"></iframe>
   </div>
 </div>
+
+<script>
+  // Ваша ссылка на опубликованную таблицу
+  const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOC_dA-1dak7YF8z-uMLy8bt0GhPUHTZDhyysPf0Pv_AJUBI-l1ozoDkXkKlK4WgxK8awvsJQlV09p/pubhtml?widget=true&headers=false";
+  
+  // Добавляем текущее время к ссылке, чтобы браузер ВСЕГДА загружал свежую версию, а не старую из памяти
+  document.getElementById('sheet-frame').src = baseUrl + "&t=" + new Date().getTime();
+</script>
 </body>
 </html>
