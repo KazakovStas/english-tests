@@ -78,7 +78,17 @@ h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; color: var(--pr
   <div id="menu-screen" class="screen active">
     <h1>📚 English Tests Hub</h1>
     <p class="subtitle">Выберите тему для проверки знаний</p>
-    <div class="topics-grid" id="topics-container"></div>
+    
+    <div class="topics-grid" id="topics-container">
+      <!-- Темы будут добавлены сюда автоматически через JavaScript -->
+    </div>
+
+    <!-- КНОПКА ТАБЛИЦЫ ЛИДЕРОВ -->
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="leaderboard.html" style="background: #fbbf24; color: #000; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-block; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3); transition: 0.3s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+         🏆 Посмотреть общую таблицу результатов
+      </a>
+    </div>
   </div>
 
   <!-- ЭКРАН 2: ТЕСТ -->
@@ -165,7 +175,7 @@ const allTopics = [
 ];
 
 // ==========================================================
-// ⚙️ ЛОГИКА РАБОТЫ (ЭТО МЕНЯТЬ НЕ НУЖНО)
+// ⚙️ ЛОГИКА РАБОТЫ
 // ==========================================================
 let currentTopic = null;
 let currentQuestionIndex = 0;
@@ -254,7 +264,6 @@ function showResults() {
   
   document.getElementById('result-message').textContent = msg;
   
-  // Сбрасываем форму и статус
   document.getElementById('result-form').reset();
   document.getElementById('send-status').textContent = '';
   document.getElementById('submit-btn').disabled = false;
@@ -279,10 +288,9 @@ function sendResults() {
   btn.textContent = "Отправка... ⏳";
   status.textContent = "";
 
-  // ⚠️ ВСТАВЬТЕ СЮДА ВАШ URL ИЗ GOOGLE APPS SCRIPT
- const scriptURL = 'https://script.google.com/macros/s/AKfycbxFeBo9hcgUPiBuHCHSQZbACO6W-WYAKHRpcmNrEZbfC3--LNMb1dTXqcp8G4mRUPMoCw/exec'; 
+  // ✅ ВАША ССЫЛКА НА GOOGLE APPS SCRIPT УЖЕ ВСТАВЛЕНА СЮДА
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxFeBo9hcgUPiBuHCHSQZbACO6W-WYAKHRpcmNrEZbfC3--LNMb1dTXqcp8G4mRUPMoCw/exec'; 
   
-  // Формируем URL с параметрами (это работает надежнее с Google Apps Script)
   const params = new URLSearchParams({
     name: name,
     class: className,
@@ -291,7 +299,6 @@ function sendResults() {
     total: currentTopic.questions.length
   });
 
-  // Используем GET-запрос вместо POST
   fetch(scriptURL + '?' + params.toString(), { method: 'GET' })
     .then(response => response.text())
     .then(data => {
