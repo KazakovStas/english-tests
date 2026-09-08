@@ -14,33 +14,237 @@ body {
   min-height: 100vh; 
   padding: 40px 20px;
 }
-.container { max-width: 1000px; margin: 0 auto; }
-h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; color: #fbbf24; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-.subtitle { text-align: center; color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
-.back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #60a5fa; text-decoration: none; font-weight: 700; font-size: 1.1rem; }
-.back-link:hover { color: #93c5fd; }
-.table-container { background: #1e293b; border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid #334155; }
-iframe { width: 100%; height: 600px; border: none; border-radius: 8px; background: #fff; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { 
+  text-align: center; 
+  font-size: 3rem; 
+  margin-bottom: 10px; 
+  color: #fbbf24;
+  text-shadow: 2px 2px 8px rgba(251, 191, 36, 0.5);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 2px 2px 8px rgba(251, 191, 36, 0.5); }
+  to { text-shadow: 2px 2px 20px rgba(251, 191, 36, 0.8); }
+}
+.subtitle { text-align: center; color: #94a3b8; margin-bottom: 40px; font-size: 1.2rem; }
+.back-link { 
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 30px; 
+  color: #60a5fa; 
+  text-decoration: none; 
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: 0.3s;
+}
+.back-link:hover { color: #93c5fd; transform: translateX(-5px); }
+
+/* Карточки топ-3 */
+.top-three { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 20px; 
+  margin-bottom: 40px;
+}
+.podium-card {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  border: 3px solid transparent;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.podium-card:hover { transform: translateY(-10px); }
+.podium-card.gold { border-color: #fbbf24; }
+.podium-card.silver { border-color: #94a3b8; }
+.podium-card.bronze { border-color: #b45309; }
+.medal { font-size: 4rem; margin-bottom: 10px; }
+.podium-card h3 { font-size: 1.5rem; margin-bottom: 8px; color: #f1f5f9; }
+.podium-card .score { font-size: 2rem; font-weight: 900; color: #10b981; margin: 10px 0; }
+.podium-card .topic { color: #94a3b8; font-size: 0.9rem; }
+
+/* Основная таблица */
+.table-container {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  overflow-x: auto;
+  border: 1px solid #334155;
+}
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.table-header h2 { color: #f1f5f9; font-size: 1.8rem; }
+.stats { color: #94a3b8; font-size: 0.95rem; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background: #0f172a;
+  color: #fbbf24;
+  padding: 15px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #334155;
+  position: sticky;
+  top: 0;
+}
+td {
+  padding: 15px;
+  border-bottom: 1px solid #334155;
+  color: #f1f5f9;
+}
+tr:hover { background: rgba(59, 130, 246, 0.1); }
+.rank { font-weight: 900; font-size: 1.2rem; }
+.rank-1 { color: #fbbf24; }
+.rank-2 { color: #94a3b8; }
+.rank-3 { color: #b45309; }
+.score-cell { font-weight: 700; color: #10b981; }
+.perfect { color: #fbbf24; font-weight: 900; }
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #94a3b8;
+  font-size: 1.3rem;
+}
+.refresh-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+.refresh-btn:hover { background: #2563eb; transform: scale(1.05); }
 </style>
 </head>
 <body>
 <div class="container">
   <a href="index.html" class="back-link">← Вернуться к тестам</a>
   <h1>🏆 Таблица лидеров</h1>
-  <p class="subtitle">Результаты всех учеников обновляются в реальном времени</p>
+  <p class="subtitle">Лучшие результаты наших учеников</p>
   
+  <!-- Топ-3 карточки -->
+  <div class="top-three" id="top-three">
+    <div class="loading">Загрузка данных...</div>
+  </div>
+
+  <!-- Основная таблица -->
   <div class="table-container">
-    <!-- Скрипт ниже автоматически подставит ссылку с защитой от кэша -->
-    <iframe id="sheet-frame" src="" width="100%" height="600px" style="border: none; border-radius: 8px; background: #fff;"></iframe>
+    <div class="table-header">
+      <h2> Все результаты</h2>
+      <div>
+        <span class="stats" id="stats-text">Загрузка...</span>
+        <button class="refresh-btn" onclick="loadData()">🔄 Обновить</button>
+      </div>
+    </div>
+    <table id="results-table">
+      <thead>
+        <tr>
+          <th>Место</th>
+          <th>Имя</th>
+          <th>Класс</th>
+          <th>Тема</th>
+          <th>Баллы</th>
+          <th>Процент</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
   </div>
 </div>
 
 <script>
-  // Ваша ссылка на опубликованную таблицу
-  const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOC_dA-1dak7YF8z-uMLy8bt0GhPUHTZDhyysPf0Pv_AJUBI-l1ozoDkXkKlK4WgxK8awvsJQlV09p/pubhtml?widget=true&headers=false";
+const sheetId = '2PACX-1vSOC_dA-1dak7YF8z-uMLy8bt0GhPUHTZDhyysPf0Pv_AJUBI-l1ozoDkXkKlK4WgxK8awvsJQlV09p';
+const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+function loadData() {
+  document.getElementById('top-three').innerHTML = '<div class="loading">Загрузка данных...</div>';
+  document.getElementById('table-body').innerHTML = '';
   
-  // Добавляем текущее время к ссылке, чтобы браузер ВСЕГДА загружал свежую версию, а не старую из памяти
-  document.getElementById('sheet-frame').src = baseUrl + "&t=" + new Date().getTime();
+  fetch(url + '&t=' + new Date().getTime())
+    .then(response => response.text())
+    .then(text => {
+      const jsonText = text.substring(47).slice(0, -2);
+      const data = JSON.parse(jsonText);
+      
+      const rows = data.table.rows.map(row => {
+        const cells = row.c.map(cell => cell ? (cell.v || '') : '');
+        return {
+          date: cells[0],
+          name: cells[1],
+          class: cells[2],
+          topic: cells[3],
+          score: parseInt(cells[4]) || 0,
+          total: parseInt(cells[5]) || 1
+        };
+      });
+
+      // Сортировка по баллам (по убыванию)
+      rows.sort((a, b) => b.score - a.score);
+
+      // Топ-3 карточки
+      const topThree = rows.slice(0, 3);
+      const medals = ['🥇', '🥈', ''];
+      const classes = ['gold', 'silver', 'bronze'];
+      
+      document.getElementById('top-three').innerHTML = topThree.map((student, index) => `
+        <div class="podium-card ${classes[index]}">
+          <div class="medal">${medals[index]}</div>
+          <h3>${student.name}</h3>
+          <div class="score">${student.score}/${student.total}</div>
+          <div class="topic">${student.topic}</div>
+        </div>
+      `).join('');
+
+      // Основная таблица
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = rows.map((student, index) => {
+        const percentage = Math.round((student.score / student.total) * 100);
+        const rankClass = index < 3 ? `rank-${index + 1}` : '';
+        const perfectClass = percentage === 100 ? 'perfect' : '';
+        
+        return `
+          <tr>
+            <td class="rank ${rankClass}">${index + 1}</td>
+            <td>${student.name}</td>
+            <td>${student.class}</td>
+            <td>${student.topic}</td>
+            <td class="score-cell ${perfectClass}">${student.score}/${student.total}</td>
+            <td class="${perfectClass}">${percentage}%</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Статистика
+      const totalTests = rows.length;
+      const avgScore = Math.round(rows.reduce((sum, r) => sum + (r.score / r.total) * 100, 0) / totalTests);
+      document.getElementById('stats-text').textContent = `Всего тестов: ${totalTests} | Средний балл: ${avgScore}%`;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('top-three').innerHTML = '<div class="loading">Ошибка загрузки. Нажмите "Обновить".</div>';
+    });
+}
+
+// Загрузка при открытии
+loadData();
+
+// Автообновление каждые 30 секунд
+setInterval(loadData, 30000);
 </script>
 </body>
 </html>
