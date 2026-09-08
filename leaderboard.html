@@ -22,39 +22,42 @@ h1 {
   color: #fbbf24;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
-.subtitle { text-align: center; color: #94a3b8; margin-bottom: 30px; }
+.subtitle { text-align: center; color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
 .back-link { 
-  display: inline-block; 
+  display: inline-flex; align-items: center; gap: 8px;
   margin-bottom: 20px; 
   color: #60a5fa; 
   text-decoration: none; 
   font-weight: 700;
+  font-size: 1.1rem;
 }
-.back-link:hover { text-decoration: underline; }
+.back-link:hover { color: #93c5fd; }
 .table-container {
   background: #1e293b;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   overflow: hidden;
+  border: 1px solid #334155;
 }
 iframe {
   width: 100%;
-  min-height: 600px;
+  height: 600px;
   border: none;
   border-radius: 8px;
+  background: #fff;
 }
 </style>
 </head>
 <body>
 <div class="container">
   <a href="index.html" class="back-link">← Вернуться к тестам</a>
-  <h1> Таблица лидеров</h1>
-  <p class="subtitle">Результаты всех учеников в реальном времени</p>
+  <h1>🏆 Таблица лидеров</h1>
+  <p class="subtitle">Результаты всех учеников обновляются в реальном времени</p>
   
   <div class="table-container">
-    <!-- ВСТАВЬТЕ СЮДА ССЫЛКУ ИЗ ШАГА 1 -->
-    <iframe src="https://docs.google.com/spreadsheets/d/e/ВАШ_ID_ТАБЛИЦЫ/pubhtml?widget=true&amp;headers=false"></iframe>
+    <!-- Ваша ссылка уже вставлена сюда с настройками для красивого отображения -->
+    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSOC_dA-1dak7YF8z-uMLy8bt0GhPUHTZDhyysPf0Pv_AJUBI-l1ozoDkXkKlK4WgxK8awvsJQlV09p/pubhtml?widget=true&amp;headers=false"></iframe>
   </div>
 </div>
 </body>
